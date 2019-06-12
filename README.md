@@ -1,12 +1,8 @@
-# SDK Image Clock
+# Bilinear Gradient Analog Clock
 
-Fitbit SDK example clock face which downloads a random image from
-[Unsplash](https://unsplash.com/) approximately every hour.
+Fitbit Bilinear Gradient Analog clock face.
 
 ![Screenshot](screenshot.png)
-
-Find out more information on the
-[Fitbit Developer Website](https://dev.fitbit.com).
 
 ## License
 

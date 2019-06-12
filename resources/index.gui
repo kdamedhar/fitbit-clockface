@@ -1,5 +1,37 @@
-<svg class="background">
-  <image id="imageBackground" />
-  <text id="labelTimeShadow" class="time time-shadow" />
-  <text id="labelTime" class="time" />
+<svg>
+  <!-- background gradient begins-->
+  <gradientRect x="0" y="0" width="300" height="300"
+    gradient-type="bilinear"
+    gradient-x1="30" gradient-y1="30"
+    gradient-x2="100%-40" gradient-y2="100%-40"
+    gradient-color1="white"
+    gradient-color2="white"
+    gradient-color3="#FBD786"
+    gradient-color4="#f7797d"/>
+  <!-- background gradient ends-->
+  <!--<arc x="50" y="20" width="100" height="100" fill="blue" opacity="0.3"
+    arc-width="10" start-angle="90" sweep-angle="360" />
+  <arc x="150" y="20" width="100" height="100" fill="blue" opacity="0.3"
+    arc-width="10" start-angle="90" sweep-angle="360" />
+  <g id="leftEye" pointer-events="visible" transform="translate(30,30)">
+    <circle  cx="82" cy="100" r="20" fill="#444444" />
+  </g>
+  <g id="rightEye" pointer-events="visible" transform="translate(30,30)">
+    <circle  cx="182" cy="100" r="20" fill="#444444" />
+  </g>
+  -->
+  <!-- clock hands begins-->
+  <g id="mins" pointer-events="visible" transform="translate(50%,50%)">
+  <rect x="$-2" y="-110" width="3" height="110" fill="#bdc3c7" />
+  </g>
+  <g id="hours" pointer-events="visible" transform="translate(50%,50%)">
+    <rect x="$-2" y="-75" width="4" height="70" fill="#0F2027" />
+  </g>
+  <g id="secs" pointer-events="visible" transform="translate(50%,50%)">
+    <rect x="$-2" y="-120" width="2" height="120" fill="#ff0000" />
+  </g>
+  <circle cx="50%" cy="50%" r="4" fill="#444444" />
+  <!--<arc x="50%-70" y="70%-30" width="150" height="80" fill="#444444" opacity="0.3"
+    arc-width="10" start-angle="90" sweep-angle="180" />-->
+  <!-- clock hands ends-->
 </svg>

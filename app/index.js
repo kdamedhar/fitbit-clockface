@@ -1,93 +1,41 @@
-import { me } from "appbit";
 import clock from "clock";
-import { display } from "display";
 import document from "document";
-import * as fs from "fs";
-import { inbox } from "file-transfer";
-import * as jpeg from "jpeg";
-import * as messaging from "messaging";
-import { preferences } from "user-settings";
 
-import * as util from "../common/utils";
+// Update the clock every second
+clock.granularity = "seconds";
 
-const SETTINGS_FILE = "settings.cbor";
-const SETTINGS_TYPE = "cbor";
+let hourHand = document.getElementById("hours");
+let minHand = document.getElementById("mins");
+let secHand = document.getElementById("secs");
 
-const labelTime = document.getElementById("labelTime");
-const labelTimeShadow = document.getElementById("labelTimeShadow");
-const imageBackground = document.getElementById("imageBackground");
-
-let mySettings;
-loadSettings();
-me.onunload = saveSettings;
-
-clock.granularity = "minutes";
-
-clock.ontick = evt => {
-  let today = evt.date;
-  let hours = today.getHours();
-  if (preferences.clockDisplay === "12h") {
-    hours = hours % 12 || 12;
-  } else {
-    hours = util.zeroPad(hours);
-  }
-  let mins = util.zeroPad(today.getMinutes());
-  let timeString = `${hours}:${mins}`;
-  labelTime.text = timeString;
-  labelTimeShadow.text = timeString;
-  if (mySettings.lastDownload) {
-    let hoursSinceDownload =
-      Math.abs(today - new Date(mySettings.lastDownload)) / (60 * 60 * 1000);
-    if (hoursSinceDownload >= 1) {
-      requestNewBackground();
-    }
-  } else {
-    requestNewBackground();
-  }
-};
-
-function requestNewBackground() {
-  let data = {
-    command: "newBackground"
-  };
-  if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
-    messaging.peerSocket.send(data);
-  }
+// Returns an angle (0-360) for the current hour in the day, including minutes
+function hoursToAngle(hours, minutes) {
+  let hourAngle = (360 / 12) * hours;
+  let minAngle = (360 / 12 / 60) * minutes;
+  return hourAngle + minAngle;
 }
 
-inbox.onnewfile = () => {
-  let fileName;
-  do {
-    fileName = inbox.nextFile();
-    if (fileName) {
-      if (mySettings.bg && mySettings.bg !== "") {
-        fs.unlinkSync(mySettings.bg);
-      }
-      let outFileName = fileName + ".txi";
-      jpeg.decodeSync(fileName, outFileName);
-      fs.unlinkSync(fileName);
-      mySettings.bg = `/private/data/${outFileName}`;
-      mySettings.lastDownload = new Date().valueOf();
-      applySettings();
-    }
-  } while (fileName);
-};
-
-function loadSettings() {
-  try {
-    mySettings = fs.readFileSync(SETTINGS_FILE, SETTINGS_TYPE);
-    applySettings();
-  } catch (ex) {
-    mySettings = {};
-  }
+// Returns an angle (0-360) for minutes
+function minutesToAngle(minutes) {
+  return (360 / 60) * minutes;
 }
 
-function saveSettings() {
-  fs.writeFileSync(SETTINGS_FILE, mySettings, SETTINGS_TYPE);
+// Returns an angle (0-360) for seconds
+function secondsToAngle(seconds) {
+  return (360 / 60) * seconds;
 }
 
-function applySettings() {
-  if (mySettings.bg) {
-    imageBackground.image = mySettings.bg;
-  }
+// Rotate the hands every tick
+function updateClock() {
+  let today = new Date();
+  let hours = today.getHours() % 12;
+  let mins = today.getMinutes();
+  let secs = today.getSeconds();
+
+  hourHand.groupTransform.rotate.angle = hoursToAngle(hours, mins);
+  minHand.groupTransform.rotate.angle = minutesToAngle(mins);
+  secHand.groupTransform.rotate.angle = secondsToAngle(secs);
 }
+
+// Update the clock every tick event
+clock.ontick = () => updateClock();

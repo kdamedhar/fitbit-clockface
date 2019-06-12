@@ -1,7 +1,7 @@
 {
   "fitbit": {
     "appType": "clockface",
-    "appDisplayName": "sdk-image-clock",
+    "appDisplayName": "Gradient-Clock",
     "iconFile": "resources/icon.png",
     "wipeColor": "",
     "requestedPermissions": [
@@ -14,8 +14,16 @@
     ],
     "i18n": {
       "en": {
-        "name": "sdk-image-clock"
+        "name": "gradient-clock"
       }
-    }
+    },
+    "appUUID": "8f68f8d8-ed31-4e8e-8ac6-b5489b26da9a"
+  },
+  "dependencies": {
+    "@fitbit/sdk": "^3.1.1",
+    "@fitbit/sdk-cli": "^1.6.0"
+  },
+  "scripts": {
+    "build": "fitbit-build"
   }
 }
